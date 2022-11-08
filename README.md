@@ -1,3 +1,3 @@
-﻿# riscv-aclint
+﻿# aclint
 
-封装 ACLINT 设备和 Sifive CLINT 设备。
+Provide structs and methods to operate riscv aclint device.
