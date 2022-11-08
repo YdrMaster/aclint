@@ -162,7 +162,7 @@ impl SifiveClint {
             asm!(
                 "   slli  a1, a1, 2
                     add   a0, a0, a1
-                    ld    a0, (a0)
+                    lw    a0, (a0)
                     ret
                 ",
                 options(noreturn),
@@ -177,7 +177,7 @@ impl SifiveClint {
                 "   slli  a1, a1, 2
                     add   a0, a0, a1
                     addi  a1, zero, 1
-                    sd    a1, (a0)
+                    sw    a1, (a0)
                     ret
                 ",
                 options(noreturn),
@@ -191,7 +191,7 @@ impl SifiveClint {
             asm!(
                 "   slli  a1, a1, 2
                     add   a0, a0, a1
-                    sd    zero, (a0)
+                    sw    zero, (a0)
                     ret
                 ",
                 options(noreturn),
