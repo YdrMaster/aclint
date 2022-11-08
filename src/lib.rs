@@ -160,9 +160,9 @@ impl SifiveClint {
     pub extern "C" fn read_msip_naked(&self, hart_idx: usize) -> bool {
         unsafe {
             asm!(
-                "   slli  a1, a1, 2
-                    add   a0, a0, a1
-                    lw    a0, (a0)
+                "   slli a1, a1, 2
+                    add  a0, a0, a1
+                    lw   a0, (a0)
                     ret
                 ",
                 options(noreturn),
@@ -174,10 +174,10 @@ impl SifiveClint {
     pub extern "C" fn set_msip_naked(&self, hart_idx: usize) {
         unsafe {
             asm!(
-                "   slli  a1, a1, 2
-                    add   a0, a0, a1
-                    addi  a1, zero, 1
-                    sw    a1, (a0)
+                "   slli a1, a1, 2
+                    add  a0, a0, a1
+                    addi a1, zero, 1
+                    sw   a1, (a0)
                     ret
                 ",
                 options(noreturn),
@@ -189,9 +189,9 @@ impl SifiveClint {
     pub extern "C" fn clear_msip_naked(&self, hart_idx: usize) {
         unsafe {
             asm!(
-                "   slli  a1, a1, 2
-                    add   a0, a0, a1
-                    sw    zero, (a0)
+                "   slli a1, a1, 2
+                    add  a0, a0, a1
+                    sw   zero, (a0)
                     ret
                 ",
                 options(noreturn),
