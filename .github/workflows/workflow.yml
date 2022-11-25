@@ -28,6 +28,9 @@ jobs:
       - name: Check format
         run: cargo fmt --check
 
+      - name: Run test
+        run: cargo test --lib
+
       - name: Install clippy-sarif
         uses: actions-rs/install@v0.1
         with:
