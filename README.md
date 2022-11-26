@@ -7,3 +7,5 @@
 ![license](https://img.shields.io/github/license/YdrMaster/aclint)
 
 Provide structs and methods to operate riscv aclint device.
+
+See [the spec repo](https://github.com/riscv/riscv-aclint).
