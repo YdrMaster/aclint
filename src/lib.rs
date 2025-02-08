@@ -1,8 +1,8 @@
 #![no_std]
-#![feature(naked_functions, asm_const)]
+#![feature(naked_functions)]
 #![deny(warnings)]
 
-use core::{arch::asm, cell::UnsafeCell, mem::size_of};
+use core::{arch::naked_asm, cell::UnsafeCell, mem::size_of};
 
 #[repr(transparent)]
 pub struct MTIME(UnsafeCell<u64>);
@@ -77,7 +77,7 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn read_mtime_naked(&self) -> u64 {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   addi sp, sp, -8
                     sd   a1, (sp)
 
@@ -91,7 +91,6 @@ impl SifiveClint {
                     ret
                 ",
                 offset = const Self::MTIME_OFFSET,
-                options(noreturn),
             )
         }
     }
@@ -99,7 +98,7 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn write_mtime_naked(&self, val: u64) -> u64 {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   addi sp, sp, -8
                     sd   a1, (sp)
 
@@ -113,7 +112,6 @@ impl SifiveClint {
                     ret
                 ",
                 offset = const Self::MTIME_OFFSET,
-                options(noreturn),
             )
         }
     }
@@ -121,7 +119,7 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn read_mtimecmp_naked(&self, hart_idx: usize) -> u64 {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   slli a1, a1, 3
                     add  a0, a0, a1
 
@@ -132,7 +130,6 @@ impl SifiveClint {
                     ret
                 ",
                 offset = const Self::MTIMER_OFFSET,
-                options(noreturn),
             )
         }
     }
@@ -140,7 +137,7 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn write_mtimecmp_naked(&self, hart_idx: usize, val: u64) {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   slli a1, a1, 3
                     add  a0, a0, a1
 
@@ -151,7 +148,6 @@ impl SifiveClint {
                     ret
                 ",
                 offset = const Self::MTIMER_OFFSET,
-                options(noreturn),
             )
         }
     }
@@ -159,13 +155,12 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn read_msip_naked(&self, hart_idx: usize) -> bool {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   slli a1, a1, 2
                     add  a0, a0, a1
                     lw   a0, (a0)
                     ret
                 ",
-                options(noreturn),
             )
         }
     }
@@ -173,14 +168,13 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn set_msip_naked(&self, hart_idx: usize) {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   slli a1, a1, 2
                     add  a0, a0, a1
                     addi a1, zero, 1
                     sw   a1, (a0)
                     ret
                 ",
-                options(noreturn),
             )
         }
     }
@@ -188,13 +182,12 @@ impl SifiveClint {
     #[naked]
     pub extern "C" fn clear_msip_naked(&self, hart_idx: usize) {
         unsafe {
-            asm!(
+            naked_asm!(
                 "   slli a1, a1, 2
                     add  a0, a0, a1
                     sw   zero, (a0)
                     ret
                 ",
-                options(noreturn),
             )
         }
     }
