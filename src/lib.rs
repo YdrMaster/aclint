@@ -1,30 +1,41 @@
+//! Rust support for RISC-V ACLINT (Advanced Core Local Interruptor) peripheral.
+//!
+//! RISC-V ACLINT is defined in <https://github.com/riscv/riscv-aclint>.
 #![no_std]
 #![feature(naked_functions)]
 #![deny(warnings)]
 
 use core::{arch::naked_asm, cell::UnsafeCell, mem::size_of};
 
+/// MTIME register.
 #[repr(transparent)]
 pub struct MTIME(UnsafeCell<u64>);
 
+/// One MTIMECMP register.
 #[repr(transparent)]
 pub struct MTIMECMP(UnsafeCell<u64>);
 
+/// One MSIP register.
 #[repr(transparent)]
 pub struct MSIP(UnsafeCell<u32>);
 
+/// One SETSSIP register.
 #[repr(transparent)]
 pub struct SETSSIP(UnsafeCell<u32>);
 
+/// Machine-level Timer Device (MTIMER).
 #[repr(transparent)]
 pub struct MTIMER([MTIMECMP; 4095]);
 
+/// Machine-level Software Interrupt Device (MSWI).
 #[repr(transparent)]
 pub struct MSWI([MSIP; 4095]);
 
+/// Supervisor-level Software Interrupt Device (SSWI).
 #[repr(transparent)]
 pub struct SSWI([SETSSIP; 4095]);
 
+/// Sifive CLINT device.
 #[repr(C)]
 pub struct SifiveClint {
     mswi: MSWI,
@@ -193,10 +204,14 @@ impl SifiveClint {
     }
 }
 
-#[test]
-fn test() {
-    assert_eq!(core::mem::size_of::<MSWI>(), 0x3ffc);
-    assert_eq!(core::mem::size_of::<SSWI>(), 0x3ffc);
-    assert_eq!(core::mem::size_of::<MTIMER>(), 0x7ff8);
-    assert_eq!(core::mem::size_of::<SifiveClint>(), 0xc000);
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test() {
+        assert_eq!(core::mem::size_of::<MSWI>(), 0x3ffc);
+        assert_eq!(core::mem::size_of::<SSWI>(), 0x3ffc);
+        assert_eq!(core::mem::size_of::<MTIMER>(), 0x7ff8);
+        assert_eq!(core::mem::size_of::<SifiveClint>(), 0xc000);
+    }
 }
