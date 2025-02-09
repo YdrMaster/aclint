@@ -5,7 +5,7 @@
 #![feature(naked_functions)]
 #![deny(warnings)]
 
-use core::{arch::naked_asm, cell::UnsafeCell, mem::size_of};
+use core::{arch::naked_asm, cell::UnsafeCell};
 
 /// MTIME register.
 #[repr(transparent)]
@@ -209,9 +209,9 @@ mod tests {
     use super::*;
     #[test]
     fn test() {
-        assert_eq!(core::mem::size_of::<MSWI>(), 0x3ffc);
-        assert_eq!(core::mem::size_of::<SSWI>(), 0x3ffc);
-        assert_eq!(core::mem::size_of::<MTIMER>(), 0x7ff8);
-        assert_eq!(core::mem::size_of::<SifiveClint>(), 0xc000);
+        assert_eq!(size_of::<MSWI>(), 0x3ffc);
+        assert_eq!(size_of::<SSWI>(), 0x3ffc);
+        assert_eq!(size_of::<MTIMER>(), 0x7ff8);
+        assert_eq!(size_of::<SifiveClint>(), 0xc000);
     }
 }
